@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Pribadi</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0f0f0f;
+      --bg-card: #1a1a2e;
+      --bg-card-hover: #22223a;
+      --text: #e0e0e0;
+      --text-muted: #888;
+      --primary: #6c5ce7;
+      --primary-hover: #5a4bd1;
+      --accent: #00b894;
+      --border: #2a2a3e;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+ background: 
+    linear-gradient(rgba(15, 15, 15, 0.75), rgba(15, 15, 15, 0.85)),
+ url('https://images.unsplash.com/photo-1526374870839-e155464bb9b2?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat fixed;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(15, 15, 15, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .menu-toggle span {
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      transition: 0.3s;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+    background: 
+    linear-gradient(rgba(15, 15, 15, 0.7), rgba(15, 15, 15, 0.8)),
+    url('https://t4.ftcdn.net/jpg/08/86/49/53/360_F_886495385_XudXZcfZb7FqTwSWpDjwOEWfsol6Sw6e.jpg') center/cover no-repeat;
+    }
+
+    .hero-greeting {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .hero-name {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-bottom: 32px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.25s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(108, 92, 231, 0.4);
+    }
+
+    .btn-outline {
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .btn-full {
+      width: 100%;
+      text-align: center;
+    }
+
+    /* SECTION */
+    section {
+      padding: 100px 0;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 48px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 48px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    /* ABOUT */
+    .about-content {
+      display: flex;
+      gap: 48px;
+      align-items: flex-start;
+    }
+
+    .avatar-placeholder {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .about-text p {
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .about-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .skill-tag {
+      padding: 6px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--accent);
+    }
+
+    /* BLOG */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    .blog-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+    }
+
+    .blog-card-image {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .blog-card-content {
+      padding: 24px;
+    }
+
+    .blog-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .blog-card-content h3 {
+      font-size: 1.15rem;
+      margin: 8px 0 12px;
+      line-height: 1.4;
+    }
+
+    .blog-card-content p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 16px;
+    }
+
+    .read-more {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .read-more:hover {
+      color: var(--accent);
+    }
+
+    /* CONTACT */
+    .contact {
+      background: radial-gradient(ellipse at 80% 50%, rgba(0, 184, 148, 0.08) 0%, transparent 60%);
+    }
+
+    .contact-desc {
+      color: var(--text-muted);
+      margin-top: -32px;
+      margin-bottom: 40px;
+    }
+
+    .contact-form {
+      max-width: 560px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+    }
+
+    .form-success {
+      display: none;
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(0, 184, 148, 0.12);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .form-success.show {
+      display: block;
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .social-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .social-links a:hover {
+      color: var(--primary);
+    }
+
+    /* BACK TO TOP */
+    .back-to-top {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      z-index: 999;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 64px;
+        right: -100%;
+        width: 260px;
+        height: calc(100vh - 64px);
+        background: var(--bg-card);
+        flex-direction: column;
+        padding: 32px;
+        gap: 24px;
+        transition: right 0.3s;
+        border-left: 1px solid var(--border);
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .about-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .about-skills {
+        justify-content: center;
+      }
+
+      .blog-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+      }
+
+      .btn {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="logo">GOBlog(GhanyOnBlog)</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Beranda</a></li>
+        <li><a href="#about">Tentang</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#contact">Kontak</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="container">
+      <p class="hero-greeting">Hi, saya</p>
+      <h1 class="hero-name">Ghany</h1>
+      <p class="hero-desc">Saya seorang manusia yang bersemangat berbagi cerita dan pengetahuan.</p>
+      <div class="hero-buttons">
+        <a href="#blog" class="btn btn-primary">Baca Blog</a>
+        <a href="#contact" class="btn btn-outline">Hubungi Saya</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="about" id="about">
+    <div class="container">
+      <h2 class="section-title">Tentang Saya</h2>
+      <div class="about-content">
+        <div class="about-avatar">
+          <div class="avatar-placeholder">G</div>
+        </div>
+        <div class="about-text">
+          <p>Saya adalah seorang pelajar yang hobi menulis tentang teknologi, sains, ekonomi dan kehidupan sehari-hari. Saya percaya bahwa berbagi ilmu adalah cara terbaik untuk terus belajar.</p>
+          <p>Di blog ini, saya menulis tentang perjalanan saya, tips & trik, serta refleksi pribadi.</p>
+          <div class="about-skills">
+            <span class="skill-tag">HTML</span>
+            <span class="skill-tag">CSS</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">React</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blog" id="blog">
+    <div class="container">
+      <h2 class="section-title">Artikel Terbaru</h2>
+      <div class="blog-grid">
+
+        <article class="blog-card">
+          <div class="blog-card-image" style="background-color: #6c5ce7;">01</div>
+          <div class="blog-card-content">
+            <span class="blog-date">20 Agustus 2026</span>
+            <h3>Memulai Perjalanan Menjadi Config Editor</h3>
+            <p>Bagaimana saya pertama kali mengenal dunia pemrograman?.</p>
+            <a href="https://medium.com/@gandolgame/bagaimana-saya-pertama-kali-mengenal-dunia-pemrograman-ebd3983b17f6" target="_blank" class="read-more">Baca selengkapnya &rarr;</a>
+          </div>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-card-image" style="background-color: #00b894;">02</div>
+          <div class="blog-card-content">
+            <span class="blog-date">2026</span>
+            <h3>Coming Soon</h3>
+            <p>Coming Soon</p>
+            <a href="#" class="read-more">Baca selengkapnya &rarr;</a>
+          </div>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-card-image" style="background-color: #e17055;">03</div>
+          <div class="blog-card-content">
+            <span class="blog-date">2026</span>
+            <h3>Coming Soon</h3>
+            <p>Coming Soon</p>
+            <a href="#" class="read-more">Baca selengkapnya &rarr;</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+<section class="contact" id="contact">
+  <div class="container">
+    <h2 class="section-title">Hubungi Saya</h2>
+    <p class="contact-desc">Punya pertanyaan atau ingin berkolaborasi? Jangan ragu untuk menghubungi saya.</p>
+    <form class="contact-form" id="contactForm" action="https://formspree.io/f/xrpzrorq" method="POST">
+      <div class="form-group">
+        <input type="text" name="name" id="name" placeholder="Nama Anda" required>
+      </div>
+      <div class="form-group">
+        <input type="email" name="email" id="email" placeholder="Email Anda" required>
+      </div>
+      <div class="form-group">
+        <textarea name="message" id="message" rows="5" placeholder="Pesan Anda..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Kirim Pesan</button>
+    </form>
+    <div class="form-success" id="formSuccess">
+        Terima kasih! Pesan Anda telah berhasil dikirim.
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <p>&copy; 2026 GOBlog. Dibuat dengan &#10084;&#65039;</p>
+      <div class="social-links">
+         <a href="https://github.com/mubbd" target="_blank" aria-label="GitHub">GitHub</a>
+         <a href="https://id.linkedin.com/in/muhammad-mubdi-ghany-9689a0320" target="_blank" aria-label="LinkedIn">LinkedIn</a>
+         <a href="https://instagram.com/mubbdd" target="_blank" aria-label="Instagram">Instagram</a>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">&uarr;</button>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    const contactForm = document.getElementById('contactForm');
+    const formSuccess = document.getElementById('formSuccess');
+
+   contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+     const data = new FormData(contactForm);
+  try {
+    const res = await fetch(contactForm.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      contactForm.reset();
+      formSuccess.classList.add('show');
+      setTimeout(() => formSuccess.classList.remove('show'), 4000);
+    }
+  } catch (err) {
+    alert('Gagal mengirim pesan. Silakan coba lagi.');
+  }
+});
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('.blog-card, .about-content, .contact-form').forEach((el) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
